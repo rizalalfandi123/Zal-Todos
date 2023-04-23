@@ -10,7 +10,7 @@ const publicRoutes = authRoutes;
 export const PublicRoutes = () => {
   return (
     <Routes>
-      <Route path={pathnames.root} element={<Outlet />}>
+      <Route path={pathnames.root} element={<LandingPage />}>
         {publicRoutes.map((route, index) => {
           return <Route key={index} {...route} />;
         })}
