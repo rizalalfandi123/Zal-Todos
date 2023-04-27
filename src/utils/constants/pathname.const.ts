@@ -1,7 +1,11 @@
 export const pathnames = {
-  root: "/",
-  login: "/login",
-  register: "/register",
+ root: '/',
+ login: '/login',
+ register: '/register',
+ app: '/app',
+ inbox: '/app/inbox',
+ today: '/app/today',
+ upcoming: 'app/upcoming'
 } as const;
 
 export type ValueOf<T> = T[keyof T];

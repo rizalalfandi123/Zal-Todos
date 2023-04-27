@@ -1,46 +1,66 @@
-import { supabase } from "@utils";
-import { useState } from "react";
+import type { Theme, SxProps } from '@mui/material/styles';
 
-interface Form {
-  email: string;
-  password: string;
-}
+import { loginSchema, TRegisterForm } from '@schemas';
+import { useForm } from 'react-hook-form';
+import { RegisterForm } from './register.form';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+
+import { Button, Link } from '@components';
+import { pathnames, supabase, useRegister } from '@utils';
+import { AuthTemplate, SocialAuthButton, TermAndPoilicyCaption } from '@templates';
+
+const defaultValues: TRegisterForm = {
+ email: '',
+ password: '',
+};
 
 const RegisterPage = () => {
-  const [form, setForm] = useState<Form>({ email: "", password: "" });
+ const { mutateAsync: login, isLoading } = useRegister();
 
-  const handleSubmit = async () => {
-    const res = await supabase.auth.signUp({
-      email: form.email,
-      password: form.password,
-    });
+ const registerWithGoogle = async () => await supabase.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: 'http://localhost:3010/login' } });
 
-    console.log({ res });
-  };
+ const {
+  control,
+  handleSubmit,
+  reset: resetForm,
+ } = useForm<TRegisterForm>({
+  defaultValues,
+  resolver: zodResolver(loginSchema),
+ });
 
-  return (
-    <div>
-      <input
-        type="text"
-        name="email"
-        value={form.email}
-        onChange={(e) => void setForm((prev) => ({ ...prev, email: e.target.value }))}
-      />
+ const onSubmit = async (data: TRegisterForm) => {
+  await login(data);
+  resetForm();
+ };
 
-      <br />
+ return (
+  <AuthTemplate>
+   <Typography variant='h4'>Register</Typography>
 
-      <input
-        type="text"
-        name="password"
-        value={form.password}
-        onChange={(e) => void setForm((prev) => ({ ...prev, password: e.target.value }))}
-      />
+   <Stack spacing={1}>
+    <SocialAuthButton provider='Google' onClick={registerWithGoogle}>
+     Register With Google
+    </SocialAuthButton>
 
-      <br />
+    <SocialAuthButton provider='Facebook'>Register With Facebook</SocialAuthButton>
+   </Stack>
 
-      <button onClick={handleSubmit}>Submit</button>
-    </div>
-  );
+   <RegisterForm control={control} />
+
+   <Button onClick={handleSubmit(onSubmit)} isLoading={isLoading}>
+    Register
+   </Button>
+
+   <TermAndPoilicyCaption />
+
+   <Typography textAlign='center'>
+    Already signed up? <Link to={pathnames.login}>Go to login</Link>
+   </Typography>
+  </AuthTemplate>
+ );
 };
 
 export default RegisterPage;

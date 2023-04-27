@@ -1,3 +1,5 @@
 export const apiKey = {
-  login: "LOGIN",
+ login: 'LOGIN',
+ register: 'REGISTER',
+ session: 'SESSION'
 };

@@ -1,48 +1,66 @@
-import type { Theme, SxProps } from "@mui/material/styles";
+import type { Theme, SxProps } from '@mui/material/styles';
 
-import { loginSchema, TLoginForm } from "@schemas";
-import { useForm } from "react-hook-form";
-import { LoginForm } from "./login.form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 
-import Container from "@mui/material/Container";
-import Stack from "@mui/material/Stack";
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 
-import { Button } from "@components";
-import { useLogin } from "@utils";
+import { LoginForm } from './login.form';
+import { loginSchema, TLoginForm } from '@schemas';
+import { Button, Link } from '@components';
+import { pathnames, supabase, useLogin } from '@utils';
+import { AuthTemplate, SocialAuthButton, TermAndPoilicyCaption } from '@templates';
 
 const defaultValues: TLoginForm = {
-  email: "",
-  password: "",
+ email: '',
+ password: '',
 };
 
-const containerStyle: SxProps<Theme> = { height: "90vh", display: "flex", alignItems: "center" };
-
 const LoginPage = () => {
-  const { mutateAsync: login, isLoading } = useLogin();
+ const { mutateAsync: loginWithEmail, isLoading } = useLogin();
 
-  const { control, handleSubmit, reset: resetForm } = useForm<TLoginForm>({
-    defaultValues,
-    resolver: zodResolver(loginSchema),
-  });
+ const loginWithGoogle = async () => await supabase.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: 'http://localhost:3010/login' } });
 
-  const onSubmit = async (data: TLoginForm) => {
-    await login(data);
-    resetForm();
-  };
+ const {
+  control,
+  handleSubmit,
+  reset: resetForm,
+ } = useForm<TLoginForm>({
+  defaultValues,
+  resolver: zodResolver(loginSchema),
+ });
 
+ const onSubmit = async (data: TLoginForm) => {
+  await loginWithEmail(data);
+  resetForm();
+ };
 
-  return (
-    <Container maxWidth="xs" sx={containerStyle}>
-      <Stack spacing={4}>
-        <LoginForm control={control} />
+ return (
+  <AuthTemplate>
+   <Typography variant='h4'>Login</Typography>
 
-        <Button onClick={handleSubmit(onSubmit)} isLoading={isLoading}>
-          Login
-        </Button>
-      </Stack>
-    </Container>
-  );
+   <Stack spacing={1}>
+    <SocialAuthButton provider='Google' onClick={loginWithGoogle}>
+     Login With Google
+    </SocialAuthButton>
+
+    <SocialAuthButton provider='Facebook'>Login With Facebook</SocialAuthButton>
+   </Stack>
+
+   <LoginForm control={control} />
+
+   <Button onClick={handleSubmit(onSubmit)} isLoading={isLoading}>
+    Login
+   </Button>
+
+   <TermAndPoilicyCaption />
+
+   <Typography textAlign='center'>
+    Don't have an account? <Link to={pathnames.register}>Sign up</Link>
+   </Typography>
+  </AuthTemplate>
+ );
 };
 
 export default LoginPage;
