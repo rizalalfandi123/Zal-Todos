@@ -4,6 +4,6 @@ import Link from './link.component';
 import BrandIcon from './brand-icon.component';
 
 export * from './illustrations.component';
-export * from "./navbar-list.component";
+export * from './navbar-list.component';
 
 export { TextField, Button, Link, BrandIcon };

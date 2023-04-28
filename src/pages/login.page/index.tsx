@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography';
 import { LoginForm } from './login.form';
 import { loginSchema, TLoginForm } from '@schemas';
 import { Button, Link } from '@components';
-import { pathnames, supabase, useLogin } from '@utils';
+import { host, pathnames, supabase, useLogin } from '@utils';
 import { AuthTemplate, SocialAuthButton, TermAndPoilicyCaption } from '@templates';
 
 const defaultValues: TLoginForm = {
@@ -17,11 +17,17 @@ const defaultValues: TLoginForm = {
  password: '',
 };
 
-const LoginPage = () => {
+export const LoginPage = () => {
  const { mutateAsync: loginWithEmail, isLoading } = useLogin();
 
- const loginWithGoogle = async () => await supabase.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: 'http://localhost:3010/login' } });
+ const loginWithGoogle = async () => {
+  const response = await supabase.auth.signInWithOAuth({
+   provider: 'google',
+   options: { redirectTo: host + pathnames.inbox },
+  });
 
+  console.log({ response });
+ };
  const {
   control,
   handleSubmit,
@@ -33,6 +39,7 @@ const LoginPage = () => {
 
  const onSubmit = async (data: TLoginForm) => {
   await loginWithEmail(data);
+
   resetForm();
  };
 

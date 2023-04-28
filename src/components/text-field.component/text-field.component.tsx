@@ -10,7 +10,10 @@ import { Controller } from 'react-hook-form';
 
 type MuiInputProps = Omit<OutlinedInputProps, 'name' | 'onChange' | 'onBlur' | 'value' | 'ref'>;
 
-interface TextFieldProps<TFieldValues extends FieldValues = FieldValues, TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>> {
+interface TextFieldProps<
+ TFieldValues extends FieldValues = FieldValues,
+ TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+> {
  name: TName;
  control: Control<TFieldValues>;
  label: string;
@@ -32,8 +35,17 @@ const textHelperStyle: SxProps<Theme> = (theme) => ({
  color: theme.palette.error.main,
 });
 
-export const TextField = <TFieldValues extends FieldValues = FieldValues, TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>>(props: TextFieldProps<TFieldValues, TName>) => {
- const { label, slots = { inputProps: {}, labelProps: {}, formControlProps: {}, helperProps: {} }, ...controlProps } = props;
+export const TextField = <
+ TFieldValues extends FieldValues = FieldValues,
+ TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+>(
+ props: TextFieldProps<TFieldValues, TName>
+) => {
+ const {
+  label,
+  slots = { inputProps: {}, labelProps: {}, formControlProps: {}, helperProps: {} },
+  ...controlProps
+ } = props;
 
  return (
   <Controller

@@ -1,4 +1,4 @@
-import type { FunctionComponent, ReactNode } from 'react';
+import type { FunctionComponent, MouseEvent, ReactNode } from 'react';
 import type { RouteApp } from '@interfaces';
 
 import { useState } from 'react';
@@ -11,7 +11,7 @@ import IconButton from '@mui/material/IconButton';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
+import ListItemButton, { ListItemButtonProps } from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MailIcon from '@mui/icons-material/Mail';
@@ -30,18 +30,25 @@ export interface NavbarItem {
  visible?: boolean;
 }
 
-type TNavbarList = FunctionComponent<{ items: NavbarItem[] }>;
+interface TNavbarListProps {
+ onClickItemButton: (data: NavbarItem) => void;
+ getSelected: (data: NavbarItem) => boolean;
+ items: NavbarItem[];
+}
+
+type TNavbarList = FunctionComponent<TNavbarListProps>;
 
 export const NavbarList: TNavbarList = (props) => {
- const { items } = props;
+ const { items, onClickItemButton, getSelected } = props;
 
  return (
   <List>
    {items.map((item, index) => {
     return (
      <ListItem key={index} disablePadding>
-      <ListItemButton>
+      <ListItemButton onClick={() => onClickItemButton(item)} selected={getSelected(item)}>
        <ListItemIcon>{item.icon}</ListItemIcon>
+
        <ListItemText primary={item.label} />
       </ListItemButton>
      </ListItem>

@@ -16,8 +16,8 @@ export const navbarList: NavbarItem[] = [
   pathname: pathnames.today,
  },
  {
-    icon: <CalendarMonthOutlinedIcon />,
-    label: 'Upcoming',
-    pathname: pathnames.upcoming,
-   },
+  icon: <CalendarMonthOutlinedIcon />,
+  label: 'Upcoming',
+  pathname: pathnames.upcoming,
+ },
 ];

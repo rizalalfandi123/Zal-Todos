@@ -1,1 +1,1 @@
-export * from "./use-session.query"
+export * from './use-session.query';

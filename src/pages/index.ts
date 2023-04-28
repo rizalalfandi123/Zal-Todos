@@ -1,6 +1,7 @@
-import LoginPage from './login.page';
-import RootPage from './root.page';
-import RegisterPage from './register.page';
-import NavgationBarPage from './navigation-bar.page';
-
-export { LoginPage, RootPage, RegisterPage, NavgationBarPage };
+export * from './inbox.page';
+export * from './login.page';
+export * from './register.page';
+export * from './upcoming.page';
+export * from './today.page';
+export * from './root.page';
+export * from './navigation-bar.page';

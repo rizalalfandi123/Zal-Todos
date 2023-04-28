@@ -6,7 +6,9 @@ import { useMutation } from 'react-query';
 import { supabase, apiKey } from '@utils';
 import { TRegisterForm } from '@schemas';
 
-type TUseRegister = (options?: Omit<UseMutationOptions<AuthResponse, unknown, TRegisterForm>, 'mutationFn' | 'mutationKey'>) => UseMutationResult<AuthResponse, unknown, TRegisterForm>;
+type TUseRegister = (
+ options?: Omit<UseMutationOptions<AuthResponse, unknown, TRegisterForm>, 'mutationFn' | 'mutationKey'>
+) => UseMutationResult<AuthResponse, unknown, TRegisterForm>;
 
 export const useRegister: TUseRegister = (options = {}) => {
  return useMutation<AuthResponse, unknown, TRegisterForm>({

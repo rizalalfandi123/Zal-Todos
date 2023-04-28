@@ -6,7 +6,9 @@ import { supabase, apiKey } from '@utils';
 
 export type SessionResponse = Session | null;
 
-type TUseSession = (options?: Omit<UseQueryOptions<SessionResponse>, 'queryFn' | 'queryKey'>) => UseQueryResult<SessionResponse>;
+type TUseSession = (
+ options?: Omit<UseQueryOptions<SessionResponse>, 'queryFn' | 'queryKey'>
+) => UseQueryResult<SessionResponse>;
 
 export const useSession: TUseSession = (options = {}) => {
  return useQuery<SessionResponse>({

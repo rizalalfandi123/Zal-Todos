@@ -71,6 +71,7 @@ export const SocialAuthButton = (props: SocialAuthButtonProps) => {
 
 export const TermAndPoilicyCaption = () => (
  <Typography variant='caption'>
-  By continuing with Google, Facebook, or Email, you agree to <Link to={pathnames.register}>Zal Todos Terms of Service and Privacy Policy</Link>.
+  By continuing with Google, Facebook, or Email, you agree to{' '}
+  <Link to={pathnames.register}>Zal Todos Terms of Service and Privacy Policy</Link>.
  </Typography>
 );

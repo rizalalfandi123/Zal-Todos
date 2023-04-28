@@ -14,5 +14,5 @@ export const components: ThemeOptions['components'] = {
  MuiToolbar: muiToolbar,
  MuiAppBar: muiAppbar,
  MuiListItemIcon: muiListItemIcon,
- MuiListItemButton: muiListItemButton
+ MuiListItemButton: muiListItemButton,
 };

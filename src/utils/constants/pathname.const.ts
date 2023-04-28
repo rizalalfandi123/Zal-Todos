@@ -5,9 +5,11 @@ export const pathnames = {
  app: '/app',
  inbox: '/app/inbox',
  today: '/app/today',
- upcoming: 'app/upcoming'
+ upcoming: '/app/upcoming',
 } as const;
 
 export type ValueOf<T> = T[keyof T];
 
 export type RoutePath = ValueOf<typeof pathnames>;
+
+export const host = window.location.origin;
