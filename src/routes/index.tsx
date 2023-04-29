@@ -1,15 +1,14 @@
-import { Suspense } from 'react';
+import { Suspense, useEffect, useRef } from 'react';
 import { BrowserRouter } from 'react-router-dom';
+import LoadingBar, { LoadingBarRef } from 'react-top-loading-bar';
 import { AppRoutes } from './app.routes';
 import { PublicRoutes } from './public.routes';
 
 const AllRoutes = () => {
  return (
   <BrowserRouter>
-   <Suspense fallback={<div>Loading</div>}>
-    <PublicRoutes />
     <AppRoutes />
-   </Suspense>
+    <PublicRoutes />
   </BrowserRouter>
  );
 };

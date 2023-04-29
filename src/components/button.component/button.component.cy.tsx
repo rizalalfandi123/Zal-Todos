@@ -5,7 +5,7 @@ describe('Button', () => {
  it('use "isLoading" props and render circular progress', () => {
   cy.mount(
    <Button isLoading variant='contained'>
-    Click me!
+    Click me
    </Button>
   );
 

@@ -5,5 +5,6 @@ import BrandIcon from './brand-icon.component';
 
 export * from './illustrations.component';
 export * from './navbar-list.component';
+export * from './modal.component'; 
 
 export { TextField, Button, Link, BrandIcon };

@@ -15,12 +15,14 @@ import Avatar from '@mui/material/Avatar';
 import ListItemText from '@mui/material/ListItemText';
 import { MouseEvent, useMemo, useState } from 'react';
 import { pathnames, supabase, useSession } from '@utils';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 
 export const UserMenu = () => {
  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
  const { data: session } = useSession();
+
+ const location = useLocation();
 
  const navigate = useNavigate();
 
@@ -37,6 +39,10 @@ export const UserMenu = () => {
  const handleLogout = async () => {
   await supabase.auth.signOut();
   navigate(pathnames.login);
+ };
+
+ const handleSettings = () => {
+  navigate(pathnames.settings, { state: { backgroundLocation: location } });
  };
 
  return (
@@ -65,7 +71,7 @@ export const UserMenu = () => {
     }}
    >
     <List disablePadding component='div'>
-     <ListItemButton>
+     <ListItemButton onClick={handleSettings}>
       <List disablePadding component='div'>
        <ListItem disablePadding>
         <ListItemAvatar>

@@ -1,14 +1,16 @@
 import type { RouteApp } from '@interfaces';
 
-import { lazy } from 'react';
-import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import { lazy, Suspense } from 'react';
+import { Navigate, Outlet, Route, Routes, useLocation } from 'react-router-dom';
 
 import { pathnames, useSession } from '@utils';
 import { appRoutes } from './app.routes';
+import { LoadingFallback } from '../suspense-fallback';
+import { settingsRoutes } from './settings.routes';
 
 const NavigationBarPage = lazy(() => import('@pages/navigation-bar.page'));
 
-const privateRoutes: RouteApp[] = appRoutes;
+const privateRoutes: RouteApp[] = appRoutes.concat(settingsRoutes);
 
 export const AppRoutes = () => {
  const { data: session, isLoading: isLoadingGetSession } = useSession();
@@ -25,20 +27,39 @@ export const AppRoutes = () => {
   return <Navigate to={pathnames.inbox} />;
  }
 
+ console.log(
+  'ii',
+  privateRoutes.filter((route) => route.isModal)
+ );
+
  return (
-  <Routes>
-   <Route path={pathnames.app} element={<NavigationBarPage />}>
-    {privateRoutes.map((route, indexMap) => {
-     const { index, children, ...routeProps } = route;
-
-     // TODO: For layout route
-     if (index && children === undefined) {
-      return <Route key={indexMap} index={true} children={undefined} {...routeProps} />;
+  <>
+   <Routes location={location.state?.backgroundLocation || location}>
+    <Route
+     path={pathnames.app}
+     element={
+      <Suspense fallback={<LoadingFallback />}>
+       <NavigationBarPage />
+      </Suspense>
      }
+    >
+     {privateRoutes
+      .filter((route) => !route.isModal)
+      .map((route, indexMap) => {
+       return <Route key={indexMap} {...route} />;
+      })}
+    </Route>
+   </Routes>
 
-     return <Route key={indexMap} {...routeProps} />;
-    })}
-   </Route>
-  </Routes>
+   {location.state?.backgroundLocation && (
+    <Routes>
+     {privateRoutes
+      .filter((route) => route.isModal)
+      .map((route, indexMap) => {
+       return <Route key={indexMap} {...route} />;
+      })}
+    </Routes>
+   )}
+  </>
  );
 };

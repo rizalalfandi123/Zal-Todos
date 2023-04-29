@@ -6,6 +6,7 @@ export const pathnames = {
  inbox: '/app/inbox',
  today: '/app/today',
  upcoming: '/app/upcoming',
+ settings: '/app/settings'
 } as const;
 
 export type ValueOf<T> = T[keyof T];

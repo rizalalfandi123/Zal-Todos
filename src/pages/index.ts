@@ -5,3 +5,4 @@ export * from './upcoming.page';
 export * from './today.page';
 export * from './root.page';
 export * from './navigation-bar.page';
+export * from './settings.page';
