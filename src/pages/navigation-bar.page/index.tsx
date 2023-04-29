@@ -8,6 +8,7 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Theme, SxProps, useTheme } from '@mui/material/styles';
 import { NavigationBarDrawer } from './drawer.navigation-bar';
 import { AppBar } from './app-bar.navigation-bar';
+import { tailwindColors } from '@utils';
 
 const containerStyle: SxProps<Theme> = { display: 'flex' };
 
@@ -60,6 +61,12 @@ export const NavigationBarPage = () => {
       '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
      }}
      open
+     PaperProps={{
+      sx: {
+       backgroundColor: tailwindColors.stale[100],
+       borderRight: 'none',
+      },
+     }}
     >
      <NavigationBarDrawer />
     </Drawer>

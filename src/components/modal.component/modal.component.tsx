@@ -22,14 +22,26 @@ interface ModalProps extends PropsWithChildren {
  title: string;
  actions?: ReactNode;
  slots?: {
-  dialogProps: DialogProps;
-  dialogActionsProps: DialogActionsProps;
-  dialogContentProps: DialogContentProps;
-  dialogTitleProps: DialogTitleProps;
+  dialogProps?: Omit<DialogProps, 'open'>;
+  dialogActionsProps?: DialogActionsProps;
+  dialogContentProps?: DialogContentProps;
+  dialogTitleProps?: DialogTitleProps;
  };
 }
 
 export const Modal = (props: ModalProps) => {
+ const {
+  title,
+  children,
+  actions = null,
+  slots = {
+   dialogActionsProps: {},
+   dialogContentProps: {},
+   dialogProps: {},
+   dialogTitleProps: {},
+  },
+ } = props;
+
  const navigate = useNavigate();
 
  const handleClose = () => {
@@ -37,18 +49,12 @@ export const Modal = (props: ModalProps) => {
  };
 
  return (
-  <Dialog open TransitionComponent={Transition} keepMounted onClose={handleClose}>
-   <DialogTitle>{"Use Google's location service?"}</DialogTitle>
-   <DialogContent>
-    <DialogContentText id='alert-dialog-slide-description'>
-     Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps
-     are running.
-    </DialogContentText>
+  <Dialog open TransitionComponent={Transition} keepMounted onClose={handleClose} fullWidth {...slots.dialogProps}>
+   <DialogTitle {...slots.dialogTitleProps}>{title}</DialogTitle>
+   <DialogContent dividers {...slots.dialogContentProps}>
+    {children}
    </DialogContent>
-   <DialogActions>
-    <Button onClick={handleClose}>Disagree</Button>
-    <Button onClick={handleClose}>Agree</Button>
-   </DialogActions>
+   <DialogActions {...slots.dialogActionsProps}>{actions}</DialogActions>
   </Dialog>
  );
 };

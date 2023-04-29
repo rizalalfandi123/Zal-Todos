@@ -7,10 +7,17 @@ import Toolbar from '@mui/material/Toolbar';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import Typography from '@mui/material/Typography';
 import { UserMenu } from './user-menu.navigation-bar';
+import { BrandIcon } from '@components';
+import { useTheme } from '@mui/material/styles';
 
 interface AppBarProps {
  handleDrawerToggle: () => void;
 }
+
+const brandIconStyle: SxProps<Theme> = {
+ width: '6rem',
+ height: 'fit-content',
+};
 
 const appBarStyle: SxProps<Theme> = (theme) => ({
  marginLeft: { sm: `${theme.additionalFields.sideBarWidth}px` },
@@ -23,6 +30,8 @@ const toggleDrawerStyle: SxProps<Theme> = { marginRight: 2, display: { sm: 'none
 const appBarRightItemsStyle: SxProps<Theme> = { flexGrow: 1, display: 'flex', alignItems: 'center' };
 
 export const AppBar = (props: AppBarProps) => {
+ const theme = useTheme();
+
  return (
   <MuiAppBar position='fixed' sx={appBarStyle}>
    <Toolbar>
@@ -31,12 +40,10 @@ export const AppBar = (props: AppBarProps) => {
       <MenuIcon />
      </IconButton>
 
-     <Typography variant='h6' noWrap component='div'>
-      Responsive drawer
-     </Typography>
+     <BrandIcon sx={brandIconStyle} primaryColor='white' secondaryColor={theme.palette.primary.main} />
     </Box>
 
-    <UserMenu/>
+    <UserMenu />
    </Toolbar>
   </MuiAppBar>
  );

@@ -26,8 +26,6 @@ export const UserMenu = () => {
 
  const navigate = useNavigate();
 
- console.log({ session });
-
  const handleOpenMenu = (event: MouseEvent<HTMLButtonElement>) => {
   setAnchorEl(event.currentTarget);
  };
@@ -42,6 +40,7 @@ export const UserMenu = () => {
  };
 
  const handleSettings = () => {
+  handleClose();
   navigate(pathnames.settings, { state: { backgroundLocation: location } });
  };
 

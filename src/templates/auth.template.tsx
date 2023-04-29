@@ -30,7 +30,8 @@ const borderContainerStyle: SxProps<Theme> = ({ palette, shape }) => ({
 const brandIconStyle: SxProps<Theme> = {
  width: '12rem',
  height: 'fit-content',
- marginBottom: '1rem',
+ marginBottom: '0.8rem',
+ alignSelf: 'center',
 };
 
 export const buttonSocialIconStyle: SxProps<Theme> = { marginRight: '0.6rem', marginTop: '-2px', fontSize: 'large' };

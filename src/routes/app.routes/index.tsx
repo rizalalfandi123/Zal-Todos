@@ -27,11 +27,6 @@ export const AppRoutes = () => {
   return <Navigate to={pathnames.inbox} />;
  }
 
- console.log(
-  'ii',
-  privateRoutes.filter((route) => route.isModal)
- );
-
  return (
   <>
    <Routes location={location.state?.backgroundLocation || location}>
