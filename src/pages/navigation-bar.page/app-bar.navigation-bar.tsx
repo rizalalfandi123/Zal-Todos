@@ -20,9 +20,9 @@ const brandIconStyle: SxProps<Theme> = {
 };
 
 const appBarStyle: SxProps<Theme> = (theme) => ({
- marginLeft: { sm: `${theme.additionalFields.sideBarWidth}px` },
+ marginLeft: { sm: `${theme.additionalFields!.sideBarWidth}px` },
  zIndex: (theme) => theme.zIndex.drawer + 1,
- height: theme.additionalFields.appBarHeight + 'px',
+ height: theme.additionalFields!.appBarHeight + 'px',
 });
 
 const toggleDrawerStyle: SxProps<Theme> = { marginRight: 2, display: { sm: 'none' } };

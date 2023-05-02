@@ -6,3 +6,6 @@ export * from './today.page';
 export * from './root.page';
 export * from './navigation-bar.page';
 export * from './settings.page';
+export * from './account-settings.page';
+export * from './theme-settings.page';
+export * from './general-settings.page';

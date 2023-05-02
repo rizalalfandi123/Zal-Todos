@@ -9,7 +9,7 @@ import GoogleIcon from '@mui/icons-material/Google';
 import Typography from '@mui/material/Typography';
 
 import { BrandIcon, Button, Link } from '@components';
-import { pathnames } from '@utils';
+import { pathnames, tailwindColors } from '@utils';
 
 interface SocialAuthButtonProps extends ButtonProps {
  provider: 'Google' | 'Facebook';
@@ -52,6 +52,7 @@ export const AuthTemplate = (props: PropsWithChildren) => {
 
 export const SocialAuthButton = (props: SocialAuthButtonProps) => {
  const { children, ...buttonProps } = props;
+ 
 
  switch (props.provider) {
   case 'Facebook':
@@ -72,7 +73,6 @@ export const SocialAuthButton = (props: SocialAuthButtonProps) => {
 
 export const TermAndPoilicyCaption = () => (
  <Typography variant='caption'>
-  By continuing with Google, Facebook, or Email, you agree to{' '}
-  <Link to={pathnames.register}>Zal Todos Terms of Service and Privacy Policy</Link>.
+  By continuing with Google, Facebook, or Email, you agree to <Link to={pathnames.register}>Zal Todos Terms of Service and Privacy Policy</Link>.
  </Typography>
 );

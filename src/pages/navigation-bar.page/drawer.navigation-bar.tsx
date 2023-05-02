@@ -27,11 +27,7 @@ export const NavigationBarDrawer = () => {
   <>
    <Toolbar />
    <Divider />
-   <NavbarList
-    items={navbarList}
-    onClickItemButton={(data) => void navigate(data.pathname)}
-    getSelected={(data) => location.pathname === data.pathname}
-   />
+   <NavbarList items={navbarList} onClickItemButton={(data) => void navigate(data.pathname)} getSelected={(data) => location.pathname === data.pathname} />
   </>
  );
 };

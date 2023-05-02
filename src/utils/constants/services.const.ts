@@ -14,4 +14,5 @@ export const reduxDevtoolOptions: DevtoolsOptions = {
 
 export const storeNames = {
  auth: 'AUTH',
+ alert: 'ALERT'
 };

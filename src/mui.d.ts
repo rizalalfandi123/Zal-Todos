@@ -7,10 +7,10 @@ interface AdditionalThemeFields {
 
 declare module '@mui/material/styles' {
  interface ThemeOptions extends MuiThemeOptions {
-  additionalFields: AdditionalThemeFields;
+  additionalFields?: AdditionalThemeFields;
  }
 
  interface Theme extends MuiTheme {
-  additionalFields: AdditionalThemeFields;
+  additionalFields?: AdditionalThemeFields;
  }
 }

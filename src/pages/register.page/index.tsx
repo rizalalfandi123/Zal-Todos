@@ -20,8 +20,7 @@ const defaultValues: TRegisterForm = {
 export const RegisterPage = () => {
  const { mutateAsync: login, isLoading } = useRegister();
 
- const registerWithGoogle = async () =>
-  await supabase.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: 'http://localhost:3010/login' } });
+ const registerWithGoogle = async () => await supabase.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: 'http://localhost:3010/login' } });
 
  const {
   control,

@@ -1,8 +1,9 @@
 import { useTheme } from '@mui/material/styles';
+import { tailwindColors } from '@utils';
 import { useEffect, useRef } from 'react';
 import LoadingBar, { LoadingBarRef } from 'react-top-loading-bar';
 
-export const LoadingFallback = () => {
+export const SuspenseFallback = () => {
  const ref = useRef<LoadingBarRef | null>(null);
 
  const theme = useTheme();
@@ -13,5 +14,5 @@ export const LoadingFallback = () => {
   }
  }, [ref]);
 
- return <LoadingBar color={theme.palette.secondary.main} height={6} ref={ref} shadow />;
+ return <LoadingBar color={tailwindColors.gray[400]} ref={ref} shadow />;
 };

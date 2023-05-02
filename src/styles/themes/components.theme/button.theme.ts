@@ -11,6 +11,10 @@ export const muiButton: Components<Theme>['MuiButton'] = {
 
    textTransform: 'none',
   },
+
+ contained: {
+    color: "white"
+ } 
  },
 
  defaultProps: {

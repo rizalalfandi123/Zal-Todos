@@ -13,13 +13,13 @@ import { tailwindColors } from '@utils';
 const containerStyle: SxProps<Theme> = { display: 'flex' };
 
 const navStyle: SxProps<Theme> = (theme) => ({
- width: { sm: theme.additionalFields.sideBarWidth },
+ width: { sm: theme.additionalFields!.sideBarWidth },
  flexShrink: { sm: 0 },
 });
 
 const tempDrawerStyle: SxProps<Theme> = (theme) => ({
  display: { xs: 'block', sm: 'none' },
- '& .MuiDrawer-paper': { boxSizing: 'border-box', width: theme.additionalFields.sideBarWidth },
+ '& .MuiDrawer-paper': { boxSizing: 'border-box', width: theme.additionalFields!.sideBarWidth },
 });
 
 export const NavigationBarPage = () => {
@@ -31,7 +31,7 @@ export const NavigationBarPage = () => {
 
  const theme = useTheme();
 
- const drawerWidth = theme.additionalFields.sideBarWidth;
+ const drawerWidth = theme.additionalFields!.sideBarWidth;
 
  const handleDrawerToggle = () => setMobileOpen((prev) => !prev);
 

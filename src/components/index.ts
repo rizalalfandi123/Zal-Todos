@@ -1,10 +1,11 @@
-import TextField from './text-field.component';
 import Button from './button.component';
 import Link from './link.component';
-import BrandIcon from './brand-icon.component';
 
 export * from './illustrations.component';
 export * from './navbar-list.component';
-export * from './modal.component'; 
+export * from './modal.component';
+export * from './custom-icons.component';
+export * from "./autocomplete.component"
+export * from './text-field.component';
 
-export { TextField, Button, Link, BrandIcon };
+export { Button, Link };

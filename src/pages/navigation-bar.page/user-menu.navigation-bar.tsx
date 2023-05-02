@@ -81,11 +81,7 @@ export const UserMenu = () => {
          )}
         </ListItemAvatar>
 
-        <ListItemText
-         primary={session?.user.user_metadata['name'] || '-'}
-         sx={{ fontWeight: 600 }}
-         secondary={session?.user.user_metadata['email'] || '-'}
-        />
+        <ListItemText primary={session?.user.user_metadata['name'] || '-'} sx={{ fontWeight: 600 }} secondary={session?.user.user_metadata['email'] || '-'} />
        </ListItem>
 
        <ListItem disablePadding sx={{ marginTop: '0.8rem' }}>

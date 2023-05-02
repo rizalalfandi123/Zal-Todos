@@ -20,14 +20,12 @@ const defaultValues: TLoginForm = {
 export const LoginPage = () => {
  const { mutateAsync: loginWithEmail, isLoading } = useLogin();
 
- const loginWithGoogle = async () => {
-  const response = await supabase.auth.signInWithOAuth({
+ const loginWithGoogle = async () =>
+  void (await supabase.auth.signInWithOAuth({
    provider: 'google',
    options: { redirectTo: host + pathnames.inbox },
-  });
+  }));
 
-  console.log({ response });
- };
  const {
   control,
   handleSubmit,

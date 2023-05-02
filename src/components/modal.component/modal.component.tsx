@@ -1,4 +1,5 @@
-import Button from '@mui/material/Button';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import Dialog, { DialogProps } from '@mui/material/Dialog';
 import DialogActions, { DialogActionsProps } from '@mui/material/DialogActions';
 import DialogContent, { DialogContentProps } from '@mui/material/DialogContent';
@@ -22,7 +23,7 @@ interface ModalProps extends PropsWithChildren {
  title: string;
  actions?: ReactNode;
  slots?: {
-  dialogProps?: Omit<DialogProps, 'open'>;
+  dialogProps?: Partial<DialogProps>;
   dialogActionsProps?: DialogActionsProps;
   dialogContentProps?: DialogContentProps;
   dialogTitleProps?: DialogTitleProps;
@@ -42,6 +43,10 @@ export const Modal = (props: ModalProps) => {
   },
  } = props;
 
+ const theme = useTheme();
+
+ const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+
  const navigate = useNavigate();
 
  const handleClose = () => {
@@ -49,7 +54,7 @@ export const Modal = (props: ModalProps) => {
  };
 
  return (
-  <Dialog open TransitionComponent={Transition} keepMounted onClose={handleClose} fullWidth {...slots.dialogProps}>
+  <Dialog open fullScreen={fullScreen} TransitionComponent={Transition} keepMounted onClose={handleClose} fullWidth {...slots.dialogProps}>
    <DialogTitle {...slots.dialogTitleProps}>{title}</DialogTitle>
    <DialogContent dividers {...slots.dialogContentProps}>
     {children}

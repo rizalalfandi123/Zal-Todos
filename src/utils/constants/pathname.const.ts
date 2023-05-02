@@ -1,3 +1,10 @@
+export const settingPathnames = {
+ settings: '/app/settings',
+ generalSettings: '/app/settings/general',
+ themeSettings: '/app/settings/theme',
+ sidebarSettings: '/app/settings/sidebar',
+};
+
 export const pathnames = {
  root: '/',
  login: '/login',
@@ -6,7 +13,7 @@ export const pathnames = {
  inbox: '/app/inbox',
  today: '/app/today',
  upcoming: '/app/upcoming',
- settings: '/app/settings',
+ ...settingPathnames,
 } as const;
 
 export type ValueOf<T> = T[keyof T];
