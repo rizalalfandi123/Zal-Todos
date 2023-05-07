@@ -8,7 +8,7 @@ import Stack from '@mui/material/Stack';
 
 import { StaticAutocomplete } from '@components';
 import { GeneralSettingChanges } from './general-settings-changes';
-import { useApplicationSettingsStore } from '@utils';
+import { t, useApplicationSettingsStore } from '@utils';
 
 type LanguageOption = TGeneralSettings['language'];
 
@@ -27,11 +27,11 @@ const languageOptions: LanguageOption[] = [
 
 const timeFormatOptions: TimeFormatOption[] = [
  {
-  label: '24 Hours',
+  label: `24 ${t('hours')}`,
   value: false,
  },
  {
-  label: '12 Hours',
+  label: `24 ${t('hours')}`,
   value: true,
  },
 ];
@@ -58,7 +58,7 @@ export const GeneralSettingsPage = () => {
     control={control}
     name='language'
     options={languageOptions}
-    label='Language'
+    label={t('language')}
     slots={{
      autoCompleteProps: {
       isOptionEqualToValue: (option, value) => option.value === value.value,
@@ -71,7 +71,7 @@ export const GeneralSettingsPage = () => {
     control={control}
     name='dateFormat'
     options={dateFormatOptions}
-    label='Date Format'
+    label={t('dateFormat')}
     slots={{
      autoCompleteProps: {
       disableClearable: true,
@@ -83,7 +83,7 @@ export const GeneralSettingsPage = () => {
     control={control}
     name='timeFormat'
     options={timeFormatOptions}
-    label='Language'
+    label={t('timeFormat')}
     slots={{
      autoCompleteProps: {
       isOptionEqualToValue: (option, value) => option.value === value.value,

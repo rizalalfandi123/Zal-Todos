@@ -1,15 +1,16 @@
-import type { PropsWithChildren } from 'react';
+import { PropsWithChildren, useMemo } from 'react';
 import type { Theme, SxProps } from '@mui/material/styles';
-import type { ButtonProps } from '@mui/material/Button';
+import type { LoadingButtonProps as ButtonProps } from '@mui/lab/LoadingButton';
 
 import Container from '@mui/material/Container';
 import Stack from '@mui/material/Stack';
 import FacebookOutlinedIcon from '@mui/icons-material/FacebookOutlined';
 import GoogleIcon from '@mui/icons-material/Google';
 import Typography from '@mui/material/Typography';
+import Button from '@mui/lab/LoadingButton';
 
-import { BrandIcon, Button, Link } from '@components';
-import { pathnames, tailwindColors } from '@utils';
+import { BrandIcon, Link } from '@components';
+import { pathnames } from '@utils';
 
 interface SocialAuthButtonProps extends ButtonProps {
  provider: 'Google' | 'Facebook';
@@ -51,24 +52,19 @@ export const AuthTemplate = (props: PropsWithChildren) => {
 };
 
 export const SocialAuthButton = (props: SocialAuthButtonProps) => {
- const { children, ...buttonProps } = props;
- 
+ const { provider, ...buttonProps } = props;
 
- switch (props.provider) {
-  case 'Facebook':
-   return (
-    <Button variant='outlined' color='info' {...buttonProps}>
-     <FacebookOutlinedIcon sx={buttonSocialIconStyle} /> {children}
-    </Button>
-   );
+ const icon = useMemo(() => {
+  switch (provider) {
+   case 'Facebook':
+    return <FacebookOutlinedIcon sx={buttonSocialIconStyle} />;
 
-  default:
-   return (
-    <Button variant='outlined' color='info' {...buttonProps}>
-     <GoogleIcon sx={buttonSocialIconStyle} /> {children}
-    </Button>
-   );
- }
+   default:
+    return <GoogleIcon sx={buttonSocialIconStyle} />;
+  }
+ }, [provider]);
+
+ return <Button variant='outlined' color='info' startIcon={icon} {...buttonProps} />;
 };
 
 export const TermAndPoilicyCaption = () => (

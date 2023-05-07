@@ -12,9 +12,9 @@ export const muiButton: Components<Theme>['MuiButton'] = {
    textTransform: 'none',
   },
 
- contained: {
-    color: "white"
- } 
+  contained: {
+   color: 'white',
+  },
  },
 
  defaultProps: {

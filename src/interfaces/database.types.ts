@@ -1,23 +1,91 @@
-export type Json = string | number | boolean | null | { [key: string]: Json } | Json[];
-
 export interface Database {
  public: {
   Tables: {
-   todos: {
+   projects: {
     Row: {
-     content: string;
      createdAt: string;
      id: string;
+     name: string;
+     updatedAt: string;
+     userId: string;
     };
     Insert: {
-     content?: string;
      createdAt?: string;
      id?: string;
+     name?: string;
+     updatedAt?: string;
+     userId: string;
     };
     Update: {
-     content?: string;
      createdAt?: string;
      id?: string;
+     name?: string;
+     updatedAt?: string;
+     userId?: string;
+    };
+   };
+   sections: {
+    Row: {
+     createdAt: string;
+     id: string;
+     projectId: string;
+     title: string;
+     updatedAt: string;
+     userId: string;
+    };
+    Insert: {
+     createdAt?: string;
+     id?: string;
+     projectId: string;
+     title?: string;
+     updatedAt?: string;
+     userId: string;
+    };
+    Update: {
+     createdAt?: string;
+     id?: string;
+     projectId?: string;
+     title?: string;
+     updatedAt?: string;
+     userId?: string;
+    };
+   };
+   todos: {
+    Row: {
+     createdAt: string;
+     description: string | null;
+     id: string;
+     index: number;
+     isComplete: boolean;
+     projectId: string;
+     sectionId: string;
+     title: string;
+     updatedAt: string;
+     userId: string;
+    };
+    Insert: {
+     createdAt?: string;
+     description?: string | null;
+     id?: string;
+     index?: number;
+     isComplete?: boolean;
+     projectId: string;
+     sectionId: string;
+     title?: string;
+     updatedAt?: string;
+     userId: string;
+    };
+    Update: {
+     createdAt?: string;
+     description?: string | null;
+     id?: string;
+     index?: number;
+     isComplete?: boolean;
+     projectId?: string;
+     sectionId?: string;
+     title?: string;
+     updatedAt?: string;
+     userId?: string;
     };
    };
   };

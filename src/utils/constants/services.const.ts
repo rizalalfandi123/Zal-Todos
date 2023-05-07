@@ -7,12 +7,16 @@ export const localStorageKey = {
 };
 
 export const reduxDevtoolOptions: DevtoolsOptions = {
- name: 'ZAL_TODOS',
+ name: 'ZAL-TODOS',
  anonymousActionType: 'UPDATE',
  enabled: developmentMode,
 };
 
 export const storeNames = {
  auth: 'AUTH',
- alert: 'ALERT'
+ alert: 'ALERT',
+ todos: 'TODOS',
+ sections: 'SECTIONS',
+ projects: 'PROJECTS',
+ settings: 'SETTINGS',
 };

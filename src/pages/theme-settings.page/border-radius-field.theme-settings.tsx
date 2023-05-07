@@ -1,9 +1,9 @@
 import { useTheme } from '@mui/material/styles';
-import { useApplicationSettingsStore, useDebounce } from '@utils';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Slider, { SliderProps } from '@mui/material/Slider';
-import { useEffect, useState } from 'react';
+
+import { t, useApplicationSettingsStore } from '@utils';
 
 export const BorderRadiusField = () => {
  const tempTheme = useApplicationSettingsStore((store) => store.tempSettings.theme);
@@ -30,7 +30,7 @@ export const BorderRadiusField = () => {
 
  return (
   <Stack>
-   <Typography fontWeight='600'>Border radius</Typography>
+   <Typography fontWeight='600'>{t('borderRadius')}</Typography>
 
    <Slider valueLabelDisplay='auto' value={tempTheme.shape?.borderRadius ?? 8} step={2} marks min={2} max={24} onChange={handleChange} />
   </Stack>

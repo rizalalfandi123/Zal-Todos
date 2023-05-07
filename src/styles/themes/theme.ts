@@ -7,7 +7,7 @@ export const getTheme = (selectedTheme: AppThemeOptions) => {
  const theme = useMemo(
   () =>
    createTheme({
-    additionalFields: { appBarHeight: 42, sideBarWidth: 240 },
+    additionalFields: { appBarHeight: 42, sideBarWidth: 240, todoSectionWidth: 358, todoItemMinWidth: 300 },
 
     typography: {
      fontFamily: "'Poppins', sans-serif",
@@ -23,7 +23,11 @@ export const getTheme = (selectedTheme: AppThemeOptions) => {
 
     palette: {
      secondary: {
-      main: tailwindColors.stale[200],
+      main: '#4b5563',
+     },
+
+     neutral: {
+      main: tailwindColors.stale[500],
      },
 
      error: {
@@ -41,12 +45,18 @@ export const getTheme = (selectedTheme: AppThemeOptions) => {
 
      text: {
       primary: tailwindColors.stale[700],
+      secondary: tailwindColors.stale[500],
      },
+     ...selectedTheme.palette,
     },
 
-    components,
+    shape: {
+     ...selectedTheme.shape,
+    },
 
-    ...selectedTheme,
+    spacing: [4, 8, 12, 16, 20, 24, 28, 32, 36],
+
+    components,
    }),
   [selectedTheme]
  );

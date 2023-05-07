@@ -5,15 +5,27 @@ export const settingPathnames = {
  sidebarSettings: '/app/settings/sidebar',
 };
 
-export const pathnames = {
- root: '/',
+export const authPathnames = {
  login: '/login',
  register: '/register',
+};
+
+export const privatePathnames = {
  app: '/app',
  inbox: '/app/inbox',
  today: '/app/today',
  upcoming: '/app/upcoming',
  ...settingPathnames,
+};
+
+export const publicPathnames = {
+ root: '/',
+ ...authPathnames,
+};
+
+export const pathnames = {
+ ...privatePathnames,
+ ...publicPathnames,
 } as const;
 
 export type ValueOf<T> = T[keyof T];

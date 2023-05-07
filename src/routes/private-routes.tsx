@@ -1,4 +1,4 @@
-import { pathnames, useSession } from '@utils';
+import { pathnames, publicPathnames, useSession } from '@utils';
 import { lazy, Suspense } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { SuspenseFallback } from './suspense-fallback';
@@ -18,92 +18,98 @@ export const PrivateRoutes = () => {
 
  const { data: session, isLoading: isLoadingSession } = useSession();
 
- if (!session && !isLoadingSession && location.pathname !== pathnames.login) {
+ if (!session && !isLoadingSession && Object.entries(publicPathnames).every(([_key, value]) => value !== location.pathname)) {
   return <Navigate to={pathnames.login} />;
  }
 
  return (
-  <Routes>
-   <Route
-    path={pathnames.app}
-    element={
-     <Suspense fallback={<SuspenseFallback />}>
-      <NavigationBarPage />
-     </Suspense>
-    }
-   >
+  <>
+   <Routes location={location.state?.backgroundLocation || location}>
     <Route
-     path={pathnames.inbox}
+     path={pathnames.app}
      element={
       <Suspense fallback={<SuspenseFallback />}>
-       <InboxPage />
-      </Suspense>
-     }
-    />
-
-    <Route
-     path={pathnames.upcoming}
-     element={
-      <Suspense fallback={<SuspenseFallback />}>
-       <UpcomingPage />
-      </Suspense>
-     }
-    />
-
-    <Route
-     path={pathnames.today}
-     element={
-      <Suspense fallback={<SuspenseFallback />}>
-       <TodayPage />
-      </Suspense>
-     }
-    />
-
-    <Route
-     path={pathnames.settings}
-     element={
-      <Suspense fallback={<SuspenseFallback />}>
-       <SettingsPage />
+       <NavigationBarPage />
       </Suspense>
      }
     >
      <Route
-      index
+      path={pathnames.inbox}
       element={
        <Suspense fallback={<SuspenseFallback />}>
-        <AcccountSettingsPage />
+        <InboxPage />
        </Suspense>
       }
      />
 
      <Route
-      path={pathnames.generalSettings}
+      path={pathnames.upcoming}
       element={
        <Suspense fallback={<SuspenseFallback />}>
-        <GeneralSettingsPage />
+        <UpcomingPage />
        </Suspense>
       }
      />
 
      <Route
-      path={pathnames.themeSettings}
+      path={pathnames.today}
       element={
        <Suspense fallback={<SuspenseFallback />}>
-        <ThemeSettingsPage />
-       </Suspense>
-      }
-     />
-
-     <Route
-      path={pathnames.sidebarSettings}
-      element={
-       <Suspense fallback={<SuspenseFallback />}>
-        <SidebarSettingsPage />
+        <TodayPage />
        </Suspense>
       }
      />
     </Route>
-   </Route>
-  </Routes>
+   </Routes>
+
+   {location.state && location.state['backgroundLocation'] && (
+    <Routes>
+     <Route
+      path={pathnames.settings}
+      element={
+       <Suspense fallback={<SuspenseFallback />}>
+        <SettingsPage />
+       </Suspense>
+      }
+     >
+      <Route
+       index
+       element={
+        <Suspense fallback={<SuspenseFallback />}>
+         <AcccountSettingsPage />
+        </Suspense>
+       }
+      />
+
+      <Route
+       path={pathnames.generalSettings}
+       element={
+        <Suspense fallback={<SuspenseFallback />}>
+         <GeneralSettingsPage />
+        </Suspense>
+       }
+      />
+
+      <Route
+       path={pathnames.themeSettings}
+       element={
+        <Suspense fallback={<SuspenseFallback />}>
+         <ThemeSettingsPage />
+        </Suspense>
+       }
+      />
+
+      <Route
+       path={pathnames.sidebarSettings}
+       element={
+        <Suspense fallback={<SuspenseFallback />}>
+         <SidebarSettingsPage />
+        </Suspense>
+       }
+      />
+     </Route>
+    </Routes>
+   )}
+  </>
  );
 };

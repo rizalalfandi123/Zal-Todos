@@ -1,10 +1,11 @@
-import { Button, Modal } from '@components';
+import { Modal } from '@components';
 import Box from '@mui/material/Box';
 import { pathnames, RoutePath, supabase, t, useAlert, useApplicationSettingsStore, useSession } from '@utils';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import Tabs from '@mui/material/Tabs';
 import Tab, { TabProps } from '@mui/material/Tab';
 import { SyntheticEvent, useEffect, useState } from 'react';
+import Button from '@mui/lab/LoadingButton';
 import ColorLensOutlinedIcon from '@mui/icons-material/ColorLensOutlined';
 import { AlertSave, AlertSaveData, saveSettingsAlert } from './alert-save.settings';
 
@@ -30,6 +31,8 @@ const tabSettings: TabProps[] = [
 export const SettingPagePage = () => {
  const navigate = useNavigate();
 
+ const appLocation = useLocation();
+
  const tempSettings = useApplicationSettingsStore((store) => store.tempSettings);
 
  const settings = useApplicationSettingsStore((store) => store.settings);
@@ -44,7 +47,9 @@ export const SettingPagePage = () => {
   if (isShowAlertSave) {
    setShowAlertSave<AlertSaveData>({ id: saveSettingsAlert, data: { nextLocation: newValue } });
   } else {
-   navigate(newValue);
+   navigate(newValue, {
+    state: appLocation.state,
+   });
   }
  };
 
@@ -68,11 +73,11 @@ export const SettingPagePage = () => {
  const actions = (
   <Box display='flex' gap='4px'>
    <Button variant='outlined' onClick={handleClose}>
-    Cancel
+    {t('cancel')}
    </Button>
 
-   <Button disabled={!isShowAlertSave} onClick={handleSaveSettings}>
-    Save
+   <Button variant='contained' disabled={!isShowAlertSave} onClick={handleSaveSettings}>
+    {t('save')}
    </Button>
   </Box>
  );

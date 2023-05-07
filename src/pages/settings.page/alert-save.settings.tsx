@@ -1,8 +1,10 @@
-import { Button, Modal } from '@components';
+import { Modal } from '@components';
 import { history } from '@routes';
-import { pathnames, settingPathnames, useAlert, useApplicationSettingsStore } from '@utils';
+import { pathnames, settingPathnames, t, useAlert, useApplicationSettingsStore, useWebTitle } from '@utils';
 import { useEffect } from 'react';
 import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/lab/LoadingButton';
 
 export const saveSettingsAlert = 'ALERT_SAVE_SETTINGS';
 
@@ -11,6 +13,8 @@ export interface AlertSaveData {
 }
 
 export const AlertSave = () => {
+ useWebTitle(t('applicationSettings'));
+
  const alertStatus = useAlert((store) => store.getAlertStatus<AlertSaveData>(saveSettingsAlert));
 
  const removeShowAlert = useAlert((store) => store.removeShow);
@@ -31,17 +35,17 @@ export const AlertSave = () => {
 
  const actions = (
   <Box display='flex' gap='8px'>
-   <Button variant='outlined' onClick={handleClickDiscard}>
-    Discard
+   <Button variant='outlined' onClick={handleCancel}>
+    {t('cancel')}
    </Button>
 
-   <Button onClick={handleCancel}>Cancel</Button>
+   <Button onClick={handleClickDiscard}>{t('discard')}</Button>
   </Box>
  );
 
  return (
   <Modal
-   title='Save Changes'
+   title={`${t('discardChanges')} ?`}
    slots={{
     dialogProps: {
      open: alertStatus.open,
@@ -52,7 +56,7 @@ export const AlertSave = () => {
    }}
    actions={actions}
   >
-   Tsst
+   <Typography>{t('discardChangesNotice')}.</Typography>
   </Modal>
  );
 };

@@ -1,12 +1,11 @@
 import type { SimplePaletteColorOptions } from '@mui/material/styles';
+import type { AppThemeOptions } from '@utils';
 
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
-import { AppThemeOptions, appThemes, useApplicationSettingsStore } from '@utils';
+import { appThemes, useApplicationSettingsStore, t } from '@utils';
 import { ThemeButton } from '@components';
-import { useEffect } from 'react';
-import { history } from '@routes';
 
 export const ThemeField = () => {
  const tempTheme = useApplicationSettingsStore((store) => store.tempSettings.theme);
@@ -24,7 +23,7 @@ export const ThemeField = () => {
 
  return (
   <Stack spacing={2}>
-   <Typography fontWeight='600'>Your theme</Typography>
+   <Typography fontWeight='600'>{t("yourTheme")}</Typography>
 
    <Stack flexWrap='wrap' direction='row' gap='8px'>
     {appThemes.map((theme, key) => {

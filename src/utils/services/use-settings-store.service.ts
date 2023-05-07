@@ -76,7 +76,7 @@ export const useApplicationSettingsStore = create<SettingsState>()(
    { name: 'zal-todos-auth' }
   ),
   {
-   store: storeNames.auth,
+   store: storeNames.settings,
    ...reduxDevtoolOptions,
   }
  )

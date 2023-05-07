@@ -5,10 +5,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import Button from '@mui/lab/LoadingButton';
 
 import { LoginForm } from './login.form';
 import { loginSchema, TLoginForm } from '@schemas';
-import { Button, Link } from '@components';
+import { Link } from '@components';
 import { host, pathnames, supabase, useLogin } from '@utils';
 import { AuthTemplate, SocialAuthButton, TermAndPoilicyCaption } from '@templates';
 
@@ -20,11 +21,12 @@ const defaultValues: TLoginForm = {
 export const LoginPage = () => {
  const { mutateAsync: loginWithEmail, isLoading } = useLogin();
 
- const loginWithGoogle = async () =>
-  void (await supabase.auth.signInWithOAuth({
+ const loginWithGoogle = async () => {
+  await supabase.auth.signInWithOAuth({
    provider: 'google',
    options: { redirectTo: host + pathnames.inbox },
-  }));
+  });
+ };
 
  const {
   control,
@@ -55,7 +57,7 @@ export const LoginPage = () => {
 
    <LoginForm control={control} />
 
-   <Button onClick={handleSubmit(onSubmit)} isLoading={isLoading}>
+   <Button onClick={handleSubmit(onSubmit)} loading={isLoading}>
     Login
    </Button>
 

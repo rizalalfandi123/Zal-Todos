@@ -7,8 +7,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import Button from '@mui/lab/LoadingButton';
 
-import { Button, Link } from '@components';
+import { Link } from '@components';
 import { pathnames, supabase, useRegister } from '@utils';
 import { AuthTemplate, SocialAuthButton, TermAndPoilicyCaption } from '@templates';
 
@@ -50,7 +51,7 @@ export const RegisterPage = () => {
 
    <RegisterForm control={control} />
 
-   <Button onClick={handleSubmit(onSubmit)} isLoading={isLoading}>
+   <Button onClick={handleSubmit(onSubmit)} loading={isLoading}>
     Register
    </Button>
 

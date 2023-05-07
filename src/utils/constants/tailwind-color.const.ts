@@ -11,6 +11,7 @@ export const tailwindColors = {
   50: '#f8fafc',
   100: '#f1f5f9',
   200: '#e2e8f0',
+  500: "#64748b",
   700: '#334155',
  },
 
@@ -44,5 +45,9 @@ export const tailwindColors = {
 
  cyan: {
   500: '#06b6d4',
+ },
+
+ neutral: {
+  400: '#a3a3a3',
  },
 } as const;
