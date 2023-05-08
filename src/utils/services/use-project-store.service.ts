@@ -4,6 +4,7 @@ import { devtools, subscribeWithSelector } from 'zustand/middleware';
 import { produce } from 'immer';
 import { reduxDevtoolOptions, storeNames } from '../constants';
 import { OnDragEndResponder } from '@hello-pangea/dnd';
+import dayjs from 'dayjs';
 
 export type Project = Database['public']['Tables']['projects']['Row'];
 
@@ -24,7 +25,9 @@ export interface ProjectState extends Project {
 export interface UseProjectState {
  projects: { [projectId: string]: ProjectState };
 
- updatedTodos: Todo[];
+ updatedTodos: { [key: string]: Todo[] };
+
+ idOpenedTodoForm: string | null;
 
  initProject: (project: ProjectState) => void;
 
@@ -32,11 +35,13 @@ export interface UseProjectState {
 
  setUpdatedTodos: (todos: Todo[]) => void;
 
- removeUpdatedTodo: (todo: Todo) => void;
+ removeUpdatedTodo: (key: string) => void;
 
  setCompleteTodo: (todo: Todo) => void;
 
  reorderTodos: OnDragEndResponder;
+
+ setIdOpenedTodoForm: (id: string | null) => void;
 }
 
 const initialProjectValue: UseProjectState['projects'] = {};
@@ -59,15 +64,15 @@ export const useProjectStore = create<UseProjectState>()(
    const setUpdatedTodos: UseProjectState['setUpdatedTodos'] = (todos) => {
     set(
      produce<UseProjectState>((state) => {
-      state.updatedTodos = state.updatedTodos.concat(todos);
+      state.updatedTodos[`${dayjs().valueOf()}`] = todos;
      })
     );
    };
 
-   const removeUpdatedTodo: UseProjectState['removeUpdatedTodo'] = (removedTodo) => {
+   const removeUpdatedTodo: UseProjectState['removeUpdatedTodo'] = (key: string) => {
     set(
      produce<UseProjectState>((state) => {
-      state.updatedTodos = state.updatedTodos.filter((todo) => todo.id !== removedTodo.id);
+      delete state.updatedTodos[key];
      })
     );
    };
@@ -78,7 +83,9 @@ export const useProjectStore = create<UseProjectState>()(
       const nextTodos = state.projects[newTodo.projectId].sections[newTodo.sectionId].todos.map((todo) => {
        if (todo.id === newTodo.id) {
         const updatedTodo = { ...todo, isComplete: !todo.isComplete };
-        state.updatedTodos.push(updatedTodo);
+
+        state.updatedTodos[`${dayjs().valueOf()}`] = [updatedTodo];
+
         return updatedTodo;
        }
 
@@ -113,6 +120,12 @@ export const useProjectStore = create<UseProjectState>()(
         endIndex: destination.index,
         startIndex: source.index,
        });
+
+       if (destination.index !== source.index) {
+        const elementsAfterTarget = next.slice(destination.index, current.length);
+
+        state.updatedTodos[`${dayjs().valueOf()}`] = elementsAfterTarget;
+       }
       } else {
        // TODO: Moving difference list
 
@@ -127,10 +140,16 @@ export const useProjectStore = create<UseProjectState>()(
 
        const elementsAfterTarget = next.slice(destination.index, next.length);
 
-       console.log({ elementsAfterTarget });
-
-       state.updatedTodos = state.updatedTodos.concat(elementsAfterTarget);
+       state.updatedTodos[`${dayjs().valueOf()}`] = elementsAfterTarget;
       }
+     })
+    );
+   };
+
+   const setIdOpenedTodoForm: UseProjectState['setIdOpenedTodoForm'] = (id) => {
+    set(
+     produce<UseProjectState>((state) => {
+      state.idOpenedTodoForm = id;
      })
     );
    };
@@ -138,12 +157,14 @@ export const useProjectStore = create<UseProjectState>()(
    return {
     projects: initialProjectValue,
     getSections,
-    updatedTodos: [],
+    updatedTodos: {},
     setUpdatedTodos,
     removeUpdatedTodo,
     setCompleteTodo,
     reorderTodos,
     initProject,
+    idOpenedTodoForm: null,
+    setIdOpenedTodoForm,
    };
   }),
 

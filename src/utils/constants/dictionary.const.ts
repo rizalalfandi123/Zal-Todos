@@ -21,6 +21,12 @@ export const en = {
  save: 'Save',
  yourTheme: 'Your theme',
  borderRadius: 'Border Radius',
+ addNewSection: 'Add New Section',
+ required: 'Required',
+ createNewSection: 'Create New Section',
+ createNewTodo: 'Create New Todo',
+ deleteConfirmNotice: 'Are you sure you want to delete this data ?',
+ delete: "Delete"
 };
 
 export const id: Dictionary = {
@@ -40,6 +46,12 @@ export const id: Dictionary = {
  save: 'Simpan',
  yourTheme: 'Tema Anda',
  borderRadius: 'Kelengkungan Tepi',
+ addNewSection: 'Tambah bagian baru',
+ required: 'Harus di isi',
+ createNewSection: 'Buat Bagian Baru',
+ createNewTodo: 'Buat Tugas Baru',
+ deleteConfirmNotice: 'Apakah Anda yakin akan menghapus data ini ?',
+ delete: "Hapus"
 };
 
 export const languageData: Record<AppLanguage, Dictionary> = {

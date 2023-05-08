@@ -1,4 +1,4 @@
-import type { FunctionComponent } from 'react';
+import { FunctionComponent, useRef } from 'react';
 import type { DraggableProvided, DraggableStateSnapshot } from '@hello-pangea/dnd';
 
 import { memo, useState } from 'react';
@@ -7,19 +7,19 @@ import Checkbox, { CheckboxProps } from '@mui/material/Checkbox';
 import Box, { BoxProps } from '@mui/material/Box';
 import Typography, { TypographyProps } from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
-import CircularProgress, { CircularProgressProps } from '@mui/material/CircularProgress';
 import CheckIcon from '@mui/icons-material/CheckCircleOutlined';
 import UncheckedIcon from '@mui/icons-material/RadioButtonUncheckedOutlined';
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
-import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
+import MoreIcon from '@mui/icons-material/MoreHorizOutlined';
 import { svgIconClasses } from '@mui/material/SvgIcon';
 import { styled, lighten } from '@mui/material/styles';
 
-import { Todo, transientOptions } from '@utils';
+import { Todo, transientOptions, useProjectStore } from '@utils';
+import { TodoItemMenu } from './todo-item-menu';
+import { UpdateTodo } from './todo.form';
 
 export interface TodoItemProps extends Todo {
  handleChangeComplete: CheckboxProps['onChange'];
- isLoadingCheck?: boolean;
  provided: DraggableProvided;
  snapshot: DraggableStateSnapshot;
 }
@@ -61,25 +61,28 @@ const Check = styled(Checkbox)<CheckboxProps>({
  },
 });
 
-const LoadingCheckIcon = styled(CircularProgress)<CircularProgressProps>({
- margin: '0 3.1px',
-});
-
 const TodoContent = styled(Box)<BoxProps>({
  display: 'flex',
  flexDirection: 'column',
  flexGrow: 1,
 });
 
+const AnchorEditForm = styled(Box)<BoxProps>({
+ width: '100%',
+ height: '1px',
+ visibility: 'hidden',
+});
+
 const TodoTitle = styled(
  Typography,
  transientOptions
-)<TypographyProps & { $complete: boolean }>(({ $complete }) => ({
+)<TypographyProps & { $complete: boolean }>(({ $complete, theme }) => ({
  fontWeight: 600,
  wordWrap: 'break-word',
  overflow: 'hidden',
  maxHeight: '3.0em',
  textDecoration: $complete ? 'line-through' : 'none',
+ paddingBottom: theme.spacing(1),
 }));
 
 const TodoDescription = styled(
@@ -104,48 +107,81 @@ const ButtonMoreOption = styled(
 }));
 
 export const TodoItem: TodoItemComponent = (props) => {
- const { handleChangeComplete, isComplete, title, description = '', isLoadingCheck = false, provided, snapshot } = props;
+ const { handleChangeComplete, provided, snapshot, ...todoProps } = props;
 
  const [showMoreButton, setShowMoreButton] = useState<boolean>(false);
+
+ const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+ const openMenu = Boolean(anchorEl);
+
+ const ref = useRef<null | HTMLElement>(null);
+
+ const handleClickMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
+  setAnchorEl(event.currentTarget);
+ };
+
+ const handleCloseMenu = () => {
+  setAnchorEl(null);
+
+  handleHideMoreButton();
+ };
 
  const handleShowMoreButton = () => setShowMoreButton(true);
 
  const handleHideMoreButton = () => setShowMoreButton(false);
 
+ const idOpenedTodoForm = useProjectStore((store) => store.idOpenedTodoForm);
+
+ const setIdOpenedTodoForm = useProjectStore((store) => store.setIdOpenedTodoForm);
+
  return (
-  <Container
-   ref={provided.innerRef}
-   onMouseOver={handleShowMoreButton}
-   onMouseOut={handleHideMoreButton}
-   sx={provided.draggableProps.style}
-   $snapshot={snapshot}
-   {...provided.draggableProps}
-   {...provided.dragHandleProps}
-  >
-   <ButtonMoreOption $show={showMoreButton}>
-    <MoreVertOutlinedIcon />
-   </ButtonMoreOption>
+  <>
+   <AnchorEditForm ref={ref} />
 
-   {isLoadingCheck ? (
-    <Check icon={<LoadingCheckIcon size='1.8em' />} checked={false} disableFocusRipple disableRipple disableTouchRipple />
-   ) : (
-    <Check onChange={handleChangeComplete} checked={isComplete} checkedIcon={<CheckIcon />} icon={<UncheckedIcon />} />
-   )}
+   <Container
+    ref={provided.innerRef}
+    onMouseOver={handleShowMoreButton}
+    onMouseOut={handleHideMoreButton}
+    sx={provided.draggableProps.style}
+    $snapshot={snapshot}
+    {...provided.draggableProps}
+    {...provided.dragHandleProps}
+   >
+    <ButtonMoreOption $show={showMoreButton} onClick={handleClickMenu}>
+     <MoreIcon />
+    </ButtonMoreOption>
 
-   <TodoContent> 
-    <TodoTitle $complete={isComplete}>{title}</TodoTitle>
+    <Check onChange={handleChangeComplete} checked={todoProps.isComplete} checkedIcon={<CheckIcon />} icon={<UncheckedIcon />} />
 
-    {description && (
-     <>
-      <Divider />
+    <TodoContent>
+     <TodoTitle $complete={todoProps.isComplete}>{todoProps.title}</TodoTitle>
 
-      <TodoDescription $complete={isComplete} variant='caption'>
-       {description}
-      </TodoDescription>
-     </>
-    )}
-   </TodoContent>
-  </Container>
+     {todoProps.description && (
+      <>
+       <Divider />
+
+       <TodoDescription $complete={todoProps.isComplete} variant='caption'>
+        {todoProps.description}
+       </TodoDescription>
+      </>
+     )}
+    </TodoContent>
+
+    <TodoItemMenu open={openMenu} anchorEl={anchorEl} onClose={handleCloseMenu} todoId={props.id} />
+
+    <UpdateTodo
+     open={idOpenedTodoForm === props.id}
+     anchorEl={ref.current}
+     transition
+     todo={todoProps}
+     onClose={() => {
+      setIdOpenedTodoForm(null);
+     }}
+     sectionId={props.sectionId}
+    />
+   </Container>
+  </>
  );
 };
 

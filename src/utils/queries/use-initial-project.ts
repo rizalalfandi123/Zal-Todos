@@ -1,6 +1,5 @@
-import type { PostgrestSingleResponse } from '@supabase/supabase-js';
 import type { UseQueryOptions, UseQueryResult } from 'react-query';
-import type { Project, ProjectState, Section, Todo } from '../services';
+import type { ProjectState } from '../services';
 
 import { useQuery } from 'react-query';
 
@@ -8,58 +7,44 @@ import { supabase } from '../config';
 import { apiKey } from '../constants';
 import { useProjectStore } from '../services';
 
-type SectionsResponse = PostgrestSingleResponse<Section[]>;
+const getProject = async ({ projectId, userId }: { projectId: string; userId: string }) => {
+ return await supabase.from('projects').select('*, sections(*, todos(*))').eq('id', projectId).eq('userId', userId);
+};
 
-type ProjectsResponse = PostgrestSingleResponse<Project[]>;
+type ProjectsResponse = Awaited<ReturnType<typeof getProject>>;
 
-type TodosResponse = PostgrestSingleResponse<Todo[]>;
-
-interface UseInitialProjectArgs extends Partial<UseQueryOptions<[SectionsResponse, TodosResponse, ProjectsResponse]>> {
+interface UseInitialProjectArgs extends Partial<UseQueryOptions<ProjectsResponse>> {
  projectId: string;
  userId: string;
 }
 
-type UseInitialProject = (args: UseInitialProjectArgs) => UseQueryResult<[SectionsResponse, TodosResponse, ProjectsResponse]>;
+type UseInitialProject = (args: UseInitialProjectArgs) => UseQueryResult<ProjectsResponse>;
 
 const initProject = useProjectStore.getState().initProject;
 
 export const useInitialProject: UseInitialProject = (args) => {
  const { projectId, userId, ...otherQueryOptions } = args;
 
- return useQuery<[SectionsResponse, TodosResponse, ProjectsResponse]>({
-  queryKey: [apiKey.sections],
+ return useQuery<ProjectsResponse>({
+  queryKey: [apiKey.projects, projectId],
 
-  queryFn: async () => {
-   const projectsResponse = await supabase.from('projects').select('*').eq('id', projectId).eq('userId', userId);
-
-   const sectionsResponse = await supabase.from('sections').select().eq('projectId', projectId).eq('userId', userId);
-
-   const todosResponse = await supabase.from('todos').select().eq('projectId', projectId).eq('userId', userId);
-
-   return [sectionsResponse, todosResponse, projectsResponse];
-  },
+  queryFn: () => getProject({ projectId, userId }),
 
   staleTime: Infinity,
 
   cacheTime: Infinity,
 
-  onSuccess: ([sectionsResponse, todosResponse, projectsResponse]) => {
+  onSuccess: (projectsResponse) => {
    if (projectsResponse.data && projectsResponse.data[0]) {
-    const projectState: ProjectState = {
-     ...projectsResponse.data[0],
-     sections: {},
-    };
+    const { sections, ...projectData } = projectsResponse.data[0];
+    const projectState: ProjectState = { ...projectData, sections: {} };
 
-    if (sectionsResponse.data) {
-     sectionsResponse.data.forEach((section) => {
-      projectState.sections[section.id] = { ...section, todos: [] };
-     });
-    }
+    if (sections && Array.isArray(sections)) {
+     const sectionMap = sections.reduce((result, current) => {
+      return Object.assign(result, { [current.id]: current });
+     }, {});
 
-    if (todosResponse.data) {
-     todosResponse.data.forEach((todo) => {
-      projectState.sections[todo.sectionId].todos.push(todo);
-     });
+     projectState.sections = sectionMap;
     }
 
     initProject(projectState);
